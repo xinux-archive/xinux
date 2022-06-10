@@ -9,8 +9,8 @@
 *.log.*
 *.sig
 .build_option
-system/mkalteriso
-system/cpp-src/mkalteriso/build/
+system/mkxinuxiso
+system/cpp-src/mkxinuxiso/build/
 pkg/
 src/
 out/
@@ -20,7 +20,7 @@ work/
 *.add*
 temp/
 .config.old
-system/cpp-src/mkalteriso/CMakeLists.txt.user
+system/cpp-src/mkxinuxiso/CMakeLists.txt.user
 menuconfig-script/kernel_choice_*
 /custom.conf
 /out/
