@@ -1,0 +1,14 @@
+#
+# locale list
+#
+# <locale name>     <locale.gen>     <lang version name>     <timezone>     <fullname>
+#
+
+# Global version
+gl                  en_US.UTF-8      gl                      UTC            global
+
+# Uzbek             uz_UZ.UTF-8
+#uz                  en_US.UTF-8      uz                      Asia/Tashkent  uzbek
+
+# English
+en                  en_US.UTF-8      en                      UTC            english
