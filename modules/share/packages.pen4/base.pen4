@@ -1,0 +1,12 @@
+# Base packages
+
+base-devel
+
+bash
+#haveged
+intel-ucode
+amd-ucode
+mkinitcpio-nfs-utils
+nbd
+
+#edk2-shell

@@ -1,0 +1,14 @@
+# Internet
+
+
+#-- connection --#
+network-manager-applet
+
+
+#-- mail client --#
+thunderbird
+# mailspring
+
+
+#-- web browser --#
+firefox

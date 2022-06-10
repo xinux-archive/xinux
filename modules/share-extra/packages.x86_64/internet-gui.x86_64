@@ -1,0 +1,10 @@
+# Internet
+
+#-- connection --#
+network-manager-applet
+
+#-- mail client --#
+thunderbird
+
+#-- web browser --#
+chromium

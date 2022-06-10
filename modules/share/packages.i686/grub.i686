@@ -1,0 +1,10 @@
+# boot tools
+#
+
+# Grub
+grub
+os-prober
+
+# EFI
+efibootmgr
+efitools

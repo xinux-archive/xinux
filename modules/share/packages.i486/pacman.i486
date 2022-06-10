@@ -1,0 +1,9 @@
+# package management
+
+#-- keyring --#
+xinuxlinux-keyring
+
+
+#-- mirrorlist --#
+xinuxlinux-mirrorlist
+reflector

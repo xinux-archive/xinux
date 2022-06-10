@@ -1,0 +1,18 @@
+# This package list will only be installed if the Japanese option is enabled.
+#
+# Japanese package
+
+# fcitx config
+xinuxlinux-fcitx-conf
+
+# fcitx
+fcitx
+fcitx-configtool
+fcitx-mozc
+fcitx-qt5
+
+# Firefox
+#firefox-i18n-ja
+
+# LibreOffice
+libreoffice-still-ja

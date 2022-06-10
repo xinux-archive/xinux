@@ -1,0 +1,27 @@
+# Other
+
+
+#-- commandline tools --#
+arch-install-scripts
+bash-completion
+git
+jq
+mc
+python-srcinfo
+
+
+#-- utility --#
+sudo
+tlp
+xdg-user-dirs
+
+
+#-- linux --#
+linux-atm
+linux-firmware
+linux-firmware-marvell
+
+
+#-- man --#
+man-db
+man-pages

@@ -1,0 +1,19 @@
+# Hardware
+#
+
+
+#-- drivers --#
+b43-fwcutter
+ipw2100-fw
+ipw2200-fw
+sof-firmware
+
+#-- interface support --#
+lsscsi
+sg3_utils
+usb_modeswitch
+usbutils
+
+#-- printers --#
+cups
+cups-pdf
