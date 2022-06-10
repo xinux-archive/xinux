@@ -1,0 +1,138 @@
+mainmenu "Xinux Yig'ish Sozlamalari"
+choice
+	prompt "Arxitektura"
+	default X64_BUILD
+	config X64_BUILD
+		bool "x86_64"
+	config I686_BUILD
+		bool "i686"
+endchoice
+
+menu "Ishga tushurish sozlamalari"
+	config ENABLE_PLYMOUTH
+		bool "Plymouth ishlatilishi"
+	config USE_OTHER_KERNEL
+		bool "zen dan boshqa yadro ishlatish"
+	if USE_OTHER_KERNEL
+		if X64_BUILD
+			choice
+				prompt "Yadroga tanlov"
+				source kernel_choice_x86_64
+			endchoice
+		endif
+		if I686_BUILD
+			choice
+				prompt "Yadroga tanlov"
+				source kernel_choice_i686
+			endchoice
+		endif
+	endif
+	choice
+		prompt "Squashfs kompresslash formati"
+		default SFS_CMP_ZSTD
+		help
+			"airootfs.sfs kompressant formatini ko`rsating"
+		config SFS_CMP_ZSTD
+			bool "zstd"
+		config SFS_CMP_GZIP
+			bool "gzip"
+		config SFS_CMP_LZMA
+			bool "lzma"
+		config SFS_CMP_LZO
+			bool "lzo"
+		config SFS_CMP_LZ4
+			bool "lz4"
+		config SFS_CMP_XZ
+			bool "xz"
+	endchoice
+	if SFS_CMP_ZSTD
+		config USE_SFS_OPTION
+			bool "yanada kengroq kompresslashni yoqish"
+	endif
+
+	if SFS_CMP_GZIP
+		config USE_SFS_OPTION
+			bool "yanada kengroq kompresslashni yoqish"
+	endif
+	if SFS_CMP_LZO
+		config USE_SFS_OPTION
+			bool "yanada kengroq kompresslashni yoqish"
+	endif
+	if SFS_CMP_LZ4
+		config USE_SFS_OPTION
+			bool "yanada kengroq kompresslashni yoqish"
+	endif
+	if SFS_CMP_XZ
+		config USE_SFS_OPTION
+			bool "yanada kengroq kompresslashni yoqish"
+	endif
+	if USE_SFS_OPTION
+		menu "高度な圧縮オプション"
+			if SFS_CMP_GZIP
+				config GZIP_SFS_COMP_LVL
+					int "kompresslash darajasi (1~22)"
+					range 1 22
+				config GZIP_SFS_WIN_SIZE
+					int "oyna hajmi (1~15)"
+					range 1 15
+			endif
+			if SFS_CMP_LZ4
+				config LZ4_HIGH_COMP
+					bool "yuqori darajadagi kompresslash"
+			endif
+			if SFS_CMP_ZSTD
+				config ZSTD_COMP_LVL
+					int "kompresslash darajasi (1~22)"
+					range 1 22
+			endif
+			if SFS_CMP_XZ
+				comment "hozirgi vaqtda xz kengaytirilgan sozlamalari mavjud emas"
+			endif
+			if SFS_CMP_LZO
+				comment "hozirgi vaqtda lzo kengaytirilgan sozlamalari mavjud emas"
+			endif
+		endmenu
+	endif
+endmenu
+menu "Live sozlamalari"
+	config USE_CUSTOM_LANG
+		bool "Boshqa til ishlatish"
+	if USE_CUSTOM_LANG
+		config CUSTOM_LANGUAGE
+			string "Boshqa til ishlatish, masalan (uz)"
+	endif
+	config USE_CUSTOM_USERNAME
+		bool "No odatiy foydalanuvchi otini ishlatish (odatan xinux)"
+	if USE_CUSTOM_USERNAME
+		config CUSTOM_USERNAME
+			string "foydalanuvchi oti"
+	endif
+	config USE_CUSTOM_PASSWD
+		bool "No odatiy maxvfiy kalit ishaltish"
+	if USE_CUSTOM_PASSWD
+		config CUSTOM_PASSWD
+			string "maxfiy so`z"
+	endif
+	if X64_BUILD
+		choice
+			prompt "Kanal"
+			source channels_menuconfig-x86_64
+		endchoice
+	endif
+	if I686_BUILD
+		choice
+			prompt "Kanal"
+			source channels_menuconfig-i686
+		endchoice
+	endif
+	config IMAGE_OWNER
+		string "Ushbu obraz muallifi ismini kiriting"
+endmenu
+menu "Boshqa sozlamalar"
+	config USE_CUSTOM_WORK
+		bool "Boshqa ishchi joyini ishlatish"
+	if USE_CUSTOM_WORK
+		config CUSTOM_WORKDIR
+			string "Ishchi joyi"
+	endif
+endmenu

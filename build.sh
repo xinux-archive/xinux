@@ -1005,7 +1005,7 @@ make_iso() {
 
 
 # Parse options
-ARGUMENT=("${DEFAULT_ARGUMENT[@]}" "${@}") OPTS=("a:" "b" "c:" "d" "e" "g:" "h" "j" "k:" "l:" "o:" "p:" "r" "t:" "u:" "w:" "x") OPTL=("arch:" "boot-splash" "comp-type:" "debug" "cleaning" "cleanup" "gpgkey:" "help" "lang:" "japanese" "kernel:" "out:" "password:" "comp-opts:" "user:" "work:" "bash-debug" "nocolor" "noconfirm" "nodepend" "gitversion" "msgdebug" "noloopmod" "tarball" "noiso" "noaur" "nochkver" "channellist" "config:" "noefi" "nodebug" "nosigcheck" "normwork" "log" "logpath:" "nolog" "nopkgbuild" "pacman-debug" "confirm" "tar-type:" "tar-opts:" "add-module:" "nogitversion" "cowspace:" "rerun" "depend" "loopmod")
+ARGUMENT=("${DEFAULT_ARGUMENT[@]}" "${@}") OPTS=("a:" "b" "c:" "d" "e" "g:" "h" "j" "k:" "l:" "o:" "p:" "r" "t:" "u:" "w:" "x") OPTL=("arch:" "boot-splash" "comp-type:" "debug" "cleaning" "cleanup" "gpgkey:" "help" "lang:" "uzbek" "kernel:" "out:" "password:" "comp-opts:" "user:" "work:" "bash-debug" "nocolor" "noconfirm" "nodepend" "gitversion" "msgdebug" "noloopmod" "tarball" "noiso" "noaur" "nochkver" "channellist" "config:" "noefi" "nodebug" "nosigcheck" "normwork" "log" "logpath:" "nolog" "nopkgbuild" "pacman-debug" "confirm" "tar-type:" "tar-opts:" "add-module:" "nogitversion" "cowspace:" "rerun" "depend" "loopmod")
 GETOPT=(-o "$(printf "%s," "${OPTS[@]}")" -l "$(printf "%s," "${OPTL[@]}")" -- "${ARGUMENT[@]}")
 getopt -Q "${GETOPT[@]}" || exit 1
 readarray -t OPT < <(getopt "${GETOPT[@]}")
@@ -1023,8 +1023,8 @@ while true; do
             esac
             shift 2
             ;;
-        -j | --japanese)
-            msg_error "This option is obsolete in XinuxISO 3. To use Japanese, use \"-l ja\"." "1"
+        -j | --uzbek)
+            msg_error "This option is obsolete in XinuxISO 3. To use Uzbek, use \"-l uz\"." "1"
             ;;
         -k | --kernel)
             customized_kernel=true kernel="${2}"
