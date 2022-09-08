@@ -1,3 +1,6 @@
+#
+# Xinux package list
+#
 # Display Manager
 
 lightdm-slick-greeter

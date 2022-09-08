@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 code="export QT_QPA_PLATFORMTHEME=qt5ct"
 files=(
     "/etc/zsh/zshenv"

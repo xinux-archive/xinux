@@ -58,7 +58,6 @@ remove "/etc/dconf/db/local.d/02-live-"*
 # Update system datebase
 dconf update
 
-# 追加のスクリプトを実行
 if [[ -d "${script_path}/${script_name}.d/" ]]; then
     for extra_script in "${script_path}/${script_name}.d/"*; do
         bash -c "${extra_script} ${user}"

@@ -1,0 +1,17 @@
+#
+# Xinux package list
+#
+# lap1sid
+# Twitter: @Pixel_3a
+# Email  : lap1sid@fascode.net
+#
+# Internet
+
+#-- connection Tools--#
+plasma-nm
+
+#-- firewall --#
+plasma-firewall
+
+#-- other tools --#
+kdenetwork-filesharing

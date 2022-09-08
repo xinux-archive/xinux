@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 set -e
 
 build_username="pkgbuild"
@@ -50,12 +50,10 @@ function user_check () {
     getent passwd "${1}" > /dev/null
 }
 
-# 一般ユーザーで実行します
 function run_user () {
     sudo -u "${build_username}" "${@}"
 }
 
-# 引数を確認
 if [[ -z "${1}" ]]; then
     echo "Please specify the directory that contains PKGBUILD." >&2
     exit 1
@@ -80,7 +78,7 @@ pacman-key --populate
 #sed -i "s/#Server/Server/g" "/etc/pacman.d/mirrorlist"
 
 # Set pacman args
-pacman_args=("--config" "/etc/xinuxiso-pacman.conf" "--noconfirm")
+pacman_args=("--config" "/etc/alteriso-pacman.conf" "--noconfirm")
 if [[ "${pacman_debug}" = true ]]; then
     pacman_args+=("--debug")
 fi
@@ -121,5 +119,5 @@ pacman -Sccc "${pacman_args[@]}"
 userdel "${build_username}"
 remove "${pkgbuild_dir}"
 remove "/etc/sudoers.d/pkgbuild"
-remove "/etc/xinuxiso-pacman.conf"
+remove "/etc/alteriso-pacman.conf"
 remove "/var/cache/pacman/pkg/"

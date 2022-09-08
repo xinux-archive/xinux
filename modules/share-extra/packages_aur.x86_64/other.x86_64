@@ -1,6 +1,9 @@
+#
+# Xinux package list
+#
 
 #-- system monitor --#
-cpu-x
+# cpu-x
 
 #-- other --#
 ipad_charge-git

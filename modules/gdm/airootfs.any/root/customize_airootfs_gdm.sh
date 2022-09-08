@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 
 # Enable gdm to auto login
 #if [[ "${boot_splash}" =  true ]]; then

@@ -1,0 +1,9 @@
+#
+# Xinux package list
+#
+# Base packages
+
+#-- Client --#
+freerdp
+libvncserver
+remmina

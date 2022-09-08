@@ -1,4 +1,3 @@
 /build/
 *.sw?
 *~
-cmake-build-debug

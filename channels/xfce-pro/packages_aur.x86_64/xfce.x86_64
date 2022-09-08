@@ -1,0 +1,11 @@
+#
+# Xinux package list
+#
+# Xfce4 Desktop Environment
+
+#-- Compiz --#
+compiz
+
+#-- plugin --#
+#xfce4-calculator-plugin
+xfce4-docklike-plugin

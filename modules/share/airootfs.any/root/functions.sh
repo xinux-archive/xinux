@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 # functions.sh
 #
 # bash functions for customize_airootfs.sh

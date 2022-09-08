@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 #shellcheck disable=SC2001
 
 set -e -u
@@ -101,7 +101,7 @@ prepare_env(){
 
 
     # Set pacman args
-    pacman_args=("--config" "/etc/xinuxiso-pacman.conf" "--noconfirm")
+    pacman_args=("--config" "/etc/alteriso-pacman.conf" "--noconfirm")
     if [[ "${pacman_debug}" = true ]]; then
         pacman_args+=("--debug")
     fi
@@ -180,7 +180,7 @@ cleanup(){
     userdel "${aur_username}"
     remove /aurbuild_temp
     remove /etc/sudoers.d/aurbuild
-    remove "/etc/xinuxiso-pacman.conf"
+    remove "/etc/alteriso-pacman.conf"
     remove "/var/cache/pacman/pkg/"
 }
 

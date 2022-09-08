@@ -1,0 +1,30 @@
+#
+# Xinux package list
+#
+# Lxde Desktop Environment
+
+
+#-- lxde base --#
+# gpicview
+lxappearance
+lxappearance-obconf
+lxde-common
+lxde-icon-theme
+lxhotkey
+lxinput
+lxlauncher
+lxpanel
+lxrandr
+lxsession
+lxtask
+lxterminal
+openbox
+pcmanfm
+
+
+#-- themes --#
+adapta-gtk-theme
+papirus-icon-theme
+
+#-- To run fascode-live-tools on lxde session --#
+python-pyxdg

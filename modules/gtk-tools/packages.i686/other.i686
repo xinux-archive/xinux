@@ -1,3 +1,5 @@
-
 #-- system monitor --#
 gnome-system-monitor
+
+#-- GUI Text Editor --#
+xed

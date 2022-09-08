@@ -1,5 +1,13 @@
+#
+# Xinux package list
+# lap1sid
+# Twitter: @Pixel_3a
+# Email  : lap1sid@fascode.net
+#
+# (c) 2019-2021 Fascode Network.
+#
 
 #-- scripts --#
-uzinfocom-gtk-bookmarks
-xinuxlinux-desktop-file
-xinuxlinux-welcome-page
+fascode-gtk-bookmarks
+xinux-desktop-file
+xinux-welcome-page

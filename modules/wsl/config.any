@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 
 # Set to true to enable plymouth.
 # See help for a list of available values.

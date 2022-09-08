@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# config
+#
+# Overwrites the first to read and set the build script
+# This configuration file follows the bash syntax.
+#
+
+# Do not include file about efi
+# Change the default behavior of "--noefi".
+# If noiso is true, it will be enabled automatically.
+noefi=true

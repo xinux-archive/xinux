@@ -1,0 +1,8 @@
+Serene Linux
+===========
+
+English:
+A port of Serene Linux, which was developed based on Ubuntu, to Alter ISO.
+The installed packages are not much different from the xfce channel.
+Contains the Serene Linux UI and wallpapers.
+It supports x86_64 and i686. The channel name is serene.

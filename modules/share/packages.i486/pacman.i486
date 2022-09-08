@@ -1,9 +1,14 @@
+#
+# Xinux package list
+#
 # package management
 
 #-- keyring --#
-xinuxlinux-keyring
+alterlinux-keyring
+xinux-keyring
 
 
 #-- mirrorlist --#
-xinuxlinux-mirrorlist
+alterlinux-mirrorlist
+xinux-mirrorlist
 reflector

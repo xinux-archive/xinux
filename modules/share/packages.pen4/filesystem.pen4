@@ -1,9 +1,11 @@
+#
+# Xinux package list
+#
 # File System
 
 
 btrfs-progs
 dosfstools
-# exfat-utils archiso v47で exfatprogs に置き換えられました
 exfatprogs
 f2fs-tools
 jfsutils

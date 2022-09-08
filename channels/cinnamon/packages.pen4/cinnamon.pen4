@@ -1,0 +1,13 @@
+#
+# Xinux package list
+#
+# Cinnamon Desktop Environment
+
+
+#-- Cinnamon --#
+cinnamon
+cinnamon-translations
+
+#-- Tools --#
+dconf-editor
+gnome-terminal

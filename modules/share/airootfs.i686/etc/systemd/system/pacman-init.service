@@ -11,7 +11,8 @@ RemainAfterExit=yes
 ExecStart=/usr/bin/pacman-key --init
 ExecStart=/usr/bin/pacman-key --populate archlinux
 ExecStart=/usr/bin/pacman-key --populate archlinux32
-ExecStart=/usr/bin/pacman-key --populate xinuxlinux
+ExecStart=/usr/bin/pacman-key --populate alterlinux
+ExecStart=/usr/bin/pacman-key --populate xinux
 
 [Install]
 WantedBy=multi-user.target

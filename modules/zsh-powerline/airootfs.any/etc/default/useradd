@@ -1,7 +1,7 @@
-# useradd defaults file for Xinux Linux
+# useradd defaults file for Xinux
 # original changes by TomK
 
-# In Xinux Linux, the default shell is changed to /bin/zsh from the default of ArchLinux
+# In Xinux, the default shell is changed to /bin/zsh from the default of ArchLinux
 
 GROUP=users
 HOME=/home

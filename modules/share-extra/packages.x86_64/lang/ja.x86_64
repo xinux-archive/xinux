@@ -1,9 +1,7 @@
-# This package list will only be installed if the Japanese option is enabled.
-#
 # Japanese package
 
 # fcitx config
-xinuxlinux-fcitx-conf
+alterlinux-fcitx-conf
 
 # fcitx
 fcitx
