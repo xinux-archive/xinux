@@ -1,3 +1,6 @@
+#
+# Xinux package list
+#
 
-pamac-all
+# pamac-all
 archlinux-appstream-data-pamac

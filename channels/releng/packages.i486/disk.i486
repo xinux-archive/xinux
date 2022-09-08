@@ -1,0 +1,20 @@
+#
+# Xinux package list
+#
+# Disk tools
+
+clonezilla
+ddrescue
+gptfdisk
+hdparm
+mdadm
+parted
+partimage
+dmraid
+partclone
+sdparm
+testdisk
+smartmontools
+lvm2
+fsarchiver
+nvme-cli

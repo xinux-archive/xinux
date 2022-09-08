@@ -1,6 +1,6 @@
-mainmenu "Xinux Yig'ish Sozlamalari"
+mainmenu "AlterLinuxのビルド設定"
 choice
-	prompt "Arxitektura"
+	prompt "アーキテクチャ"
 	default X64_BUILD
 	config X64_BUILD
 		bool "x86_64"
@@ -8,30 +8,30 @@ choice
 		bool "i686"
 endchoice
 
-menu "Ishga tushurish sozlamalari"
+menu "起動設定"
 	config ENABLE_PLYMOUTH
-		bool "Plymouth ishlatilishi"
+		bool "Plymouthを使用"
 	config USE_OTHER_KERNEL
-		bool "zen dan boshqa yadro ishlatish"
+		bool "zenカーネル以外を使用"
 	if USE_OTHER_KERNEL
 		if X64_BUILD
 			choice
-				prompt "Yadroga tanlov"
+				prompt "使用するカーネル"
 				source kernel_choice_x86_64
 			endchoice
 		endif
 		if I686_BUILD
 			choice
-				prompt "Yadroga tanlov"
+				prompt "使用するカーネル"
 				source kernel_choice_i686
 			endchoice
 		endif
 	endif
 	choice
-		prompt "Squashfs kompresslash formati"
+		prompt "Squashfsの圧縮形式"
 		default SFS_CMP_ZSTD
 		help
-			"airootfs.sfs kompressant formatini ko`rsating"
+			airootfs.sfsの圧縮形式を指定してください。
 		config SFS_CMP_ZSTD
 			bool "zstd"
 		config SFS_CMP_GZIP
@@ -47,92 +47,92 @@ menu "Ishga tushurish sozlamalari"
 	endchoice
 	if SFS_CMP_ZSTD
 		config USE_SFS_OPTION
-			bool "yanada kengroq kompresslashni yoqish"
+			bool "高度な圧縮オプションを有効にする"
 	endif
 
 	if SFS_CMP_GZIP
 		config USE_SFS_OPTION
-			bool "yanada kengroq kompresslashni yoqish"
+			bool "高度な圧縮オプションを有効にする"
 	endif
 	if SFS_CMP_LZO
 		config USE_SFS_OPTION
-			bool "yanada kengroq kompresslashni yoqish"
+			bool "高度な圧縮オプションを有効にする"
 	endif
 	if SFS_CMP_LZ4
 		config USE_SFS_OPTION
-			bool "yanada kengroq kompresslashni yoqish"
+			bool "高度な圧縮オプションを有効にする"
 	endif
 	if SFS_CMP_XZ
 		config USE_SFS_OPTION
-			bool "yanada kengroq kompresslashni yoqish"
+			bool "高度な圧縮オプションを有効にする"
 	endif
 	if USE_SFS_OPTION
 		menu "高度な圧縮オプション"
 			if SFS_CMP_GZIP
 				config GZIP_SFS_COMP_LVL
-					int "kompresslash darajasi (1~22)"
+					int "圧縮レベル (1~22)"
 					range 1 22
 				config GZIP_SFS_WIN_SIZE
-					int "oyna hajmi (1~15)"
+					int "ウィンドウサイズ (1~15)"
 					range 1 15
 			endif
 			if SFS_CMP_LZ4
 				config LZ4_HIGH_COMP
-					bool "yuqori darajadagi kompresslash"
+					bool "高圧縮モード"
 			endif
 			if SFS_CMP_ZSTD
 				config ZSTD_COMP_LVL
-					int "kompresslash darajasi (1~22)"
+					int "圧縮レベル (1~22)"
 					range 1 22
 			endif
 			if SFS_CMP_XZ
-				comment "hozirgi vaqtda xz kengaytirilgan sozlamalari mavjud emas"
+				comment "現在xzの詳細設定はサポートされていません。"
 			endif
 			if SFS_CMP_LZO
-				comment "hozirgi vaqtda lzo kengaytirilgan sozlamalari mavjud emas"
+				comment "現在lzoの詳細設定はサポートされていません。"
 			endif
 		endmenu
 	endif
 endmenu
-menu "Live sozlamalari"
+menu "Live環境の設定"
 	config USE_CUSTOM_LANG
-		bool "Boshqa til ishlatish"
+		bool "英語以外の言語にする"
 	if USE_CUSTOM_LANG
 		config CUSTOM_LANGUAGE
-			string "Boshqa til ishlatish, masalan (uz)"
+			string "ロケール名(ja)など"
 	endif
 	config USE_CUSTOM_USERNAME
-		bool "No odatiy foydalanuvchi otini ishlatish (odatan xinux)"
+		bool "デフォルトではないユーザー名を使用(デフォルトはalter)"
 	if USE_CUSTOM_USERNAME
 		config CUSTOM_USERNAME
-			string "foydalanuvchi oti"
+			string "ユーザー名"
 	endif
 	config USE_CUSTOM_PASSWD
-		bool "No odatiy maxvfiy kalit ishaltish"
+		bool "デフォルトでないパスワードを使用"
 	if USE_CUSTOM_PASSWD
 		config CUSTOM_PASSWD
-			string "maxfiy so`z"
+			string "パスワード"
 	endif
 	if X64_BUILD
 		choice
-			prompt "Kanal"
+			prompt "チャンネル"
 			source channels_menuconfig-x86_64
 		endchoice
 	endif
 	if I686_BUILD
 		choice
-			prompt "Kanal"
+			prompt "チャンネル"
 			source channels_menuconfig-i686
 		endchoice
 	endif
 	config IMAGE_OWNER
-		string "Ushbu obraz muallifi ismini kiriting"
+		string "イメージファイルの所有者名"
 endmenu
-menu "Boshqa sozlamalar"
+menu "その他ビルド設定"
 	config USE_CUSTOM_WORK
-		bool "Boshqa ishchi joyini ishlatish"
+		bool "カスタムワークディレクトリを使用する"
 	if USE_CUSTOM_WORK
 		config CUSTOM_WORKDIR
-			string "Ishchi joyi"
+			string "ワークディレクトリ"
 	endif
 endmenu

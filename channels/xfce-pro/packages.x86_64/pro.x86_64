@@ -1,0 +1,12 @@
+# Pro packages
+
+#-- Wine --#
+playonlinux
+wine
+winetricks
+
+#-- OBS Studio --#
+obs-studio
+
+#-- openshot --#
+openshot

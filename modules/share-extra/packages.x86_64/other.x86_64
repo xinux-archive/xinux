@@ -9,7 +9,7 @@ gvfs-smb
 
 
 #-- boot manager --#
-# grub-theme-vimix-xinux
+# grub-theme-vimix-alter
 grub-theme-vimix
 grub-customizer
 

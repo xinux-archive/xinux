@@ -9,8 +9,8 @@
 *.log.*
 *.sig
 .build_option
-system/mkxinuxiso
-system/cpp-src/mkxinuxiso/build/
+system/mkalteriso
+system/cpp-src/mkalteriso/build/
 pkg/
 src/
 out/
@@ -20,7 +20,7 @@ work/
 *.add*
 temp/
 .config.old
-system/cpp-src/mkxinuxiso/CMakeLists.txt.user
+system/cpp-src/mkalteriso/CMakeLists.txt.user
 menuconfig-script/kernel_choice_*
 /custom.conf
 /out/
@@ -29,4 +29,3 @@ out
 /.config
 menuconfig-script/channels_menuconfig-*
 .DS_Store
-.idea

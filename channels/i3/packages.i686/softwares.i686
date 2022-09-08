@@ -1,0 +1,26 @@
+#
+# Xinux i3wm edition package list
+#
+# some softwares
+
+# file manager
+thunar
+file-roller
+
+# software manager
+gnome-packagekit
+
+# notification daemon
+dunst
+
+# clipboard
+xfce4-clipman-plugin
+
+# screenshot
+xfce4-screenshooter
+
+# for sysmenu
+arandr
+
+# Screen lock
+light-locker

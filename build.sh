@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+#
+# build.sh
 #
 # The main script that runs the build
 #
@@ -15,7 +16,7 @@ customized_username=false customized_password=false customized_kernel=false cust
 pkglist_args=() makepkg_script_args=() modules=() norepopkg=()
 legacy_mode=false rerun=false
 DEFAULT_ARGUMENT="" ARGUMENT=("${@}")
-xinuxiso_version="3.1"
+alteriso_version="3.1"
 
 # Load config file
 [[ ! -f "${defaultconfig}" ]] && "${tools_dir}/msg.sh" -a 'build.sh' error "${defaultconfig} was not found." && exit 1
@@ -46,7 +47,7 @@ msg_warn() { msg_common warn "${@}"; }
 
 # Show an debug message
 # ${1}: message string
-msg_debug() {
+msg_debug() { 
     [[ "${debug}" = true ]] && msg_common debug "${@}" || return 0
 }
 
@@ -60,13 +61,17 @@ msg_error() {
 
 
 # Usage: getclm <number>
+# 標準入力から値を受けとり、引数で指定された列を抽出します。
 getclm() { cut -d " " -f "${1}"; }
 
 # Usage: echo_blank <number>
+# 指定されたぶんの半角空白文字を出力します
 echo_blank(){ yes " " 2> /dev/null  | head -n "${1}" | tr -d "\n"; }
 
+# cpコマンドのラッパー
 _cp(){ cp -af --no-preserve=ownership,mode -- "${@}"; }
 
+# gitコマンドのラッパー
 # https://stackoverflow.com/questions/71901632/fatal-unsafe-repository-home-repon-is-owned-by-someone-else
 # https://qiita.com/megane42/items/5375b54ea3570506e296
 git(){
@@ -88,8 +93,8 @@ _usage () {
     done
 
     echo " Channel:"
-    for _dirname in $(bash "${tools_dir}/channel.sh" --version "${xinuxiso_version}" -d -b -n --line show | sed "s|.add$||g"); do
-        readarray -t _output < <("${tools_dir}/channel.sh" --version "${xinuxiso_version}" --nocheck desc "${_dirname}")
+    for _dirname in $(bash "${tools_dir}/channel.sh" --version "${alteriso_version}" -d -b -n --line show | sed "s|.add$||g"); do
+        readarray -t _output < <("${tools_dir}/channel.sh" --version "${alteriso_version}" --nocheck desc "${_dirname}")
         _first=true
         echo -n "    ${_dirname}"
         for _out in "${_output[@]}"; do
@@ -130,7 +135,7 @@ run_once() {
         mount_airootfs
         eval "${@}"
         mkdir -p "${lockfile_dir}"; touch "${lockfile_dir}/build.${1}"
-
+        
     else
         msg_debug "Skipped because ${1} has already been executed."
     fi
@@ -143,6 +148,7 @@ remove() {
     for _file in "${@}"; do msg_debug "Removing ${_file}"; rm -rf "${_file}"; done
 }
 
+# 強制終了時にアンマウント
 umount_trap() {
     local _status="${?}"
     umount_work
@@ -150,6 +156,7 @@ umount_trap() {
     exit "${_status}"
 }
 
+# 設定ファイルを読み込む
 # load_config [file1] [file2] ...
 load_config() {
     local _file
@@ -159,7 +166,7 @@ load_config() {
 
 # Display channel list
 show_channel_list() {
-    local _args=("-v" "${xinuxiso_version}" show)
+    local _args=("-v" "${alteriso_version}" show)
     [[ "${nochkver}" = true ]] && _args+=("-n")
     bash "${tools_dir}/channel.sh" "${_args[@]}"
 }
@@ -168,7 +175,7 @@ show_channel_list() {
 # for_module <command>
 for_module(){ local module && for module in "${modules[@]}"; do eval "${@//"{}"/${module}}"; done; }
 
-# pacstrap
+# pacstrapを実行
 _pacstrap(){
     msg_info "Installing packages to ${airootfs_dir}/'..."
     local _args=("-c" "-G" "-M" "--" "${airootfs_dir}" "${@}")
@@ -177,14 +184,15 @@ _pacstrap(){
     msg_info "Packages installed successfully!"
 }
 
-# /etc/xinuxiso-pacman.conf
+# chroot環境でpacmanコマンドを実行
+# /etc/alteriso-pacman.confを準備してコマンドを実行します
 _run_with_pacmanconf(){
-    sed "s|^CacheDir     =|#CacheDir    =|g" "${build_dir}/pacman.conf" > "${airootfs_dir}/etc/xinuxiso-pacman.conf"
+    sed "s|^CacheDir     =|#CacheDir    =|g" "${build_dir}/pacman.conf" > "${airootfs_dir}/etc/alteriso-pacman.conf"
     eval -- "${@}"
-    remove "${airootfs_dir}/etc/xinuxiso-pacman.conf"
+    remove "${airootfs_dir}/etc/alteriso-pacman.conf"
 }
 
-# chroot
+# コマンドをchrootで実行する
 _chroot_run() {
     msg_debug "Run command in chroot\nCommand: ${*}"
     arch-chroot "${airootfs_dir}" "${@}" || return "${?}"
@@ -292,6 +300,7 @@ prepare_env() {
         export ARCHISO_GNUPG_FD
     fi
 
+    # 強制終了時に作業ディレクトリを削除する
     local _trap_remove_work
     _trap_remove_work() {
         local status="${?}"
@@ -342,8 +351,8 @@ prepare_build() {
     # Debug mode
     [[ "${bash_debug}" = true ]] && set -x -v
 
-    # Show xinuxiso version
-    [[ -n "${gitrev-""}" ]] && msg_debug "The version of xinuxiso is ${gitrev}"
+    # Show alteriso version
+    [[ -n "${gitrev-""}" ]] && msg_debug "The version of alteriso is ${gitrev}"
 
     # Load configs
     load_config "${channel_dir}/config.any" "${channel_dir}/config.${arch}"
@@ -352,8 +361,8 @@ prepare_build() {
     modules+=("${additional_modules[@]}")
 
     # Legacy mode
-    if [[ "$(bash "${tools_dir}/channel.sh" --version "${xinuxiso_version}" ver "${channel_name}")" = "3.0" ]]; then
-        msg_warn "The module cannot be used because it works with Xinux ISO3.0 compatibility."
+    if [[ "$(bash "${tools_dir}/channel.sh" --version "${alteriso_version}" ver "${channel_name}")" = "3.0" ]]; then
+        msg_warn "The module cannot be used because it works with Alter ISO3.0 compatibility."
         modules=("legacy")
         legacy_mode=true
         [[ "${include_extra-"unset"}" = true ]] && modules=("legacy-extra")
@@ -374,7 +383,7 @@ prepare_build() {
     # Check modules
     module_check(){
         msg_debug -n "Checking ${1} module ... "
-        bash "${tools_dir}/module.sh" check "${1}" || msg_error "Module ${1} is not available." "1" && echo "${module_dir}/${1}"
+        bash "${tools_dir}/module.sh" check "${1}" || msg_error "Module ${1} is not available." "1" && msg_debug "Load ${module_dir}/${1}"
     }
     readarray -t modules < <(printf "%s\n" "${modules[@]}" | awk '!a[$0]++')
     for_module "module_check {}"
@@ -409,7 +418,7 @@ prepare_build() {
     esac
 
     # Generate iso file name
-    local _channel_name="${channel_name%.add}-${locale_version}"
+    local _channel_name="${channel_name%.add}-${locale_version}" 
     iso_filename="${iso_name}-${_channel_name}-${iso_version}-${arch}.iso"
     tar_filename="${iso_filename%.iso}.tar.${tar_ext}"
     [[ "${nochname}" = true ]] && iso_filename="${iso_name}-${iso_version}-${arch}.iso"
@@ -420,7 +429,7 @@ prepare_build() {
 
     # Check architecture for each channel
     local _exit=0
-    bash "${tools_dir}/channel.sh" --version "${xinuxiso_version}" -a "${arch}" -n -b check "${channel_name}" || _exit="${?}"
+    bash "${tools_dir}/channel.sh" --version "${alteriso_version}" -a "${arch}" -n -b check "${channel_name}" || _exit="${?}"
     ( (( "${_exit}" != 0 )) && (( "${_exit}" != 1 )) ) && msg_error "${channel_name} channel does not support current architecture (${arch})." "1"
 
     # Run with tee
@@ -561,7 +570,7 @@ make_pkgbuild() {
         msg_info "Find $(basename "${_dir}")"
         _cp "${_dir}" "${airootfs_dir}/pkgbuilds/"
     done
-
+    
     # copy buold script
     _cp "${script_path}/system/pkgbuild.sh" "${airootfs_dir}/root/pkgbuild.sh"
 
@@ -595,7 +604,7 @@ make_customize_airootfs() {
     else
         install -m 0644 -- "${script_path}/mkinitcpio/mkinitcpio.conf" "${airootfs_dir}/etc/mkinitcpio.conf"
     fi
-
+    
     # customize_airootfs options
     # -b                        : Enable boot splash.
     # -d                        : Enable debug mode.
@@ -611,9 +620,9 @@ make_customize_airootfs() {
     # -z <locale_time>          : Set the time zone.
     # -l <locale_name>          : Set language.
     #
-    # -j is obsolete in XinuxISO3 and cannot be used.
+    # -j is obsolete in AlterISO3 and cannot be used.
     # -r is obsolete due to the removal of rebuild.
-    # -k changed in XinuxISO3 from passing kernel name to passing kernel configuration.
+    # -k changed in AlterISO3 from passing kernel name to passing kernel configuration.
 
     # Generate options of customize_airootfs.sh.
     _airootfs_script_options=(-p "${password}" -k "${kernel} ${kernel_filename} ${kernel_mkinitcpio_profile}" -u "${username}" -o "${os_name}" -i "${install_dir}" -s "${usershell}" -a "${arch}" -g "${locale_gen_name}" -l "${locale_name}" -z "${locale_time}" -t "${theme_name}")
@@ -656,15 +665,15 @@ make_setup_mkinitcpio() {
     local _hook
     mkdir -p "${airootfs_dir}/etc/initcpio/hooks" "${airootfs_dir}/etc/initcpio/install"
 
-    for _hook in "archiso" "archiso_shutdown" "archiso_pxe_common" "archiso_pxe_nbd" "archiso_pxe_http" "archiso_pxe_nfs" "archiso_loop_mnt"; do
+    for _hook in "archiso" "archiso_pxe_common" "archiso_pxe_nbd" "archiso_pxe_http" "archiso_pxe_nfs" "archiso_loop_mnt"; do
         install -m 0644 -- "${script_path}/system/initcpio/hooks/${_hook}" "${airootfs_dir}/etc/initcpio/hooks"
         install -m 0644 -- "${script_path}/system/initcpio/install/${_hook}" "${airootfs_dir}/etc/initcpio/install"
     done
 
     sed -i "s|%COWSPACE%|${cowspace}|g" "${airootfs_dir}/etc/initcpio/hooks/archiso"
-    sed -i "s|/usr/lib/initcpio/|/etc/initcpio/|g" "${airootfs_dir}/etc/initcpio/install/archiso_shutdown"
+    #sed -i "s|/usr/lib/initcpio/|/etc/initcpio/|g" "${airootfs_dir}/etc/initcpio/install/archiso_shutdown"
     install -m 0644 -- "${script_path}/system/initcpio/install/archiso_kms" "${airootfs_dir}/etc/initcpio/install"
-    install -m 0755 -- "${script_path}/system/initcpio/script/archiso_shutdown" "${airootfs_dir}/etc/initcpio"
+    #install -m 0755 -- "${script_path}/system/initcpio/script/archiso_shutdown" "${airootfs_dir}/etc/initcpio"
     install -m 0644 -- "${script_path}/mkinitcpio/mkinitcpio-archiso.conf" "${airootfs_dir}/etc/mkinitcpio-archiso.conf"
     [[ "${boot_splash}" = true ]] && cp "${script_path}/mkinitcpio/mkinitcpio-archiso-plymouth.conf" "${airootfs_dir}/etc/mkinitcpio-archiso.conf"
 
@@ -676,7 +685,7 @@ make_setup_mkinitcpio() {
     _chroot_run mkinitcpio -c "/etc/mkinitcpio-archiso.conf" -k "/boot/${kernel_filename}" -g "/boot/archiso.img"
 
     [[ "${gpg_key}" ]] && exec 17<&-
-
+    
     return 0
 }
 
@@ -719,6 +728,7 @@ make_boot_extra() {
 make_syslinux() {
     mkdir -p "${isofs_dir}/syslinux"
 
+    # 一時ディレクトリに設定ファイルをコピー
     mkdir -p "${build_dir}/syslinux/"
     _cp "${script_path}/syslinux/"* "${build_dir}/syslinux/"
     [[ -d "${channel_dir}/syslinux" ]] && [[ "${customized_syslinux}" = true ]] && cp -af "${channel_dir}/syslinux"* "${build_dir}/syslinux/"
@@ -751,7 +761,7 @@ make_syslinux() {
     local _remove_config
     function _remove_config() {
         remove "${isofs_dir}/syslinux/${1}"
-        sed -i "s|$(grep "${1}" "${isofs_dir}/syslinux/archiso_sys_load.cfg")||g" "${isofs_dir}/syslinux/archiso_sys_load.cfg"
+        sed -i "s|$(grep "${1}" "${isofs_dir}/syslinux/archiso_sys_load.cfg")||g" "${isofs_dir}/syslinux/archiso_sys_load.cfg" 
     }
 
     [[ "${norescue_entry}" = true  ]] && _remove_config archiso_sys_rescue.cfg
@@ -790,8 +800,8 @@ make_efi() {
     [[ "${boot_splash}" = true ]] && _use_config_name="splash"
     _bootfile="$(basename "$(ls "${airootfs_dir}/usr/lib/systemd/boot/efi/systemd-boot"*".efi" )")"
 
-    install -d -m 0755 -- "${isofs_dir}/EFI/boot"
-    install -m 0644 -- "${airootfs_dir}/usr/lib/systemd/boot/efi/${_bootfile}" "${isofs_dir}/EFI/boot/${_bootfile#systemd-}"
+    install -d -m 0755 -- "${isofs_dir}/EFI/BOOT"
+    install -m 0644 -- "${airootfs_dir}/usr/lib/systemd/boot/efi/${_bootfile}" "${isofs_dir}/EFI/BOOT/${_bootfile#systemd-}"
 
     install -d -m 0755 -- "${isofs_dir}/loader/entries"
     sed "s|%ARCH%|${arch}|g;" "${script_path}/efiboot/${_use_config_name}/loader.conf" > "${isofs_dir}/loader/loader.conf"
@@ -834,19 +844,19 @@ make_efiboot() {
     mkdir -p "${build_dir}/efiboot"
     mount "${build_dir}/efiboot.img" "${build_dir}/efiboot"
 
-    mkdir -p "${build_dir}/efiboot/EFI/xinuxiso/${arch}" "${build_dir}/efiboot/EFI/boot" "${build_dir}/efiboot/loader/entries"
-    _cp "${isofs_dir}/${install_dir}/boot/${arch}/${kernel_filename}" "${build_dir}/efiboot/EFI/xinuxiso/${arch}/${kernel_filename}.efi"
-    _cp "${isofs_dir}/${install_dir}/boot/${arch}/archiso.img" "${build_dir}/efiboot/EFI/xinuxiso/${arch}/archiso.img"
+    mkdir -p "${build_dir}/efiboot/EFI/alteriso/${arch}" "${build_dir}/efiboot/EFI/BOOT" "${build_dir}/efiboot/loader/entries"
+    _cp "${isofs_dir}/${install_dir}/boot/${arch}/${kernel_filename}" "${build_dir}/efiboot/EFI/alteriso/${arch}/${kernel_filename}.efi"
+    _cp "${isofs_dir}/${install_dir}/boot/${arch}/archiso.img" "${build_dir}/efiboot/EFI/alteriso/${arch}/archiso.img"
 
     local _ucode_image _efi_config _use_config_name="nosplash" _bootfile
     for _ucode_image in "${airootfs_dir}/boot/"{intel-uc.img,intel-ucode.img,amd-uc.img,amd-ucode.img,early_ucode.cpio,microcode.cpio}; do
-        [[ -e "${_ucode_image}" ]] && _cp "${_ucode_image}" "${build_dir}/efiboot/EFI/xinuxiso/"
+        [[ -e "${_ucode_image}" ]] && _cp "${_ucode_image}" "${build_dir}/efiboot/EFI/alteriso/"
     done
 
-    _cp "${airootfs_dir}/usr/share/efitools/efi/HashTool.efi" "${build_dir}/efiboot/EFI/boot/"
+    _cp "${airootfs_dir}/usr/share/efitools/efi/HashTool.efi" "${build_dir}/efiboot/EFI/BOOT/"
 
     _bootfile="$(basename "$(ls "${airootfs_dir}/usr/lib/systemd/boot/efi/systemd-boot"*".efi" )")"
-    _cp "${airootfs_dir}/usr/lib/systemd/boot/efi/${_bootfile}" "${build_dir}/efiboot/EFI/boot/${_bootfile#systemd-}"
+    _cp "${airootfs_dir}/usr/lib/systemd/boot/efi/${_bootfile}" "${build_dir}/efiboot/EFI/BOOT/${_bootfile#systemd-}"
 
     [[ "${boot_splash}" = true ]] && _use_config_name="splash"
     sed "s|%ARCH%|${arch}|g;" "${script_path}/efiboot/${_use_config_name}/loader.conf" > "${build_dir}/efiboot/loader/loader.conf"
@@ -902,7 +912,7 @@ make_tarball() {
     mv "${airootfs_dir}.img.org" "${airootfs_dir}.img"
 
     [[ "${noiso}" = true ]] && msg_info "The password for the live user and root is ${password}."
-
+    
     return 0
 }
 
@@ -946,13 +956,13 @@ make_prepare() {
     return 0
 }
 
-make_xinuxiso_info(){
+make_alteriso_info(){
     # iso version info
     if [[ "${include_info}" = true ]]; then
-        local _info_file="${isofs_dir}/xinuxiso-info" _version="${iso_version}"
+        local _info_file="${isofs_dir}/alteriso-info" _version="${iso_version}"
         remove "${_info_file}"; touch "${_info_file}"
         [[ -d "${script_path}/.git" ]] && [[ "${gitversion}" = false ]] && _version="${iso_version}-${gitrev}"
-        "${tools_dir}/xinuxiso-info.sh" -a "${arch}" -b "${boot_splash}" -c "${channel_name%.add}" -d "${iso_publisher}" -k "${kernel}" -o "${os_name}" -p "${password}" -u "${username}" -v "${_version}" -m "$(printf "%s," "${modules[@]}")" > "${_info_file}"
+        "${tools_dir}/alteriso-info.sh" -a "${arch}" -b "${boot_splash}" -c "${channel_name%.add}" -d "${iso_publisher}" -k "${kernel}" -o "${os_name}" -p "${password}" -u "${username}" -v "${_version}" -m "$(printf "%s," "${modules[@]}")" > "${_info_file}"
     fi
 
     return 0
@@ -987,7 +997,7 @@ make_iso() {
         -volid "${iso_label}" \
         -appid "${iso_application}" \
         -publisher "${iso_publisher}" \
-        -preparer "prepared by XinuxISO" \
+        -preparer "prepared by AlterISO" \
         -eltorito-boot syslinux/isolinux.bin \
         -eltorito-catalog syslinux/boot.cat \
         -no-emul-boot -boot-load-size 4 -boot-info-table \
@@ -1005,10 +1015,10 @@ make_iso() {
 
 
 # Parse options
-ARGUMENT=("${DEFAULT_ARGUMENT[@]}" "${@}") OPTS=("a:" "b" "c:" "d" "e" "g:" "h" "j" "k:" "l:" "o:" "p:" "r" "t:" "u:" "w:" "x") OPTL=("arch:" "boot-splash" "comp-type:" "debug" "cleaning" "cleanup" "gpgkey:" "help" "lang:" "uzbek" "kernel:" "out:" "password:" "comp-opts:" "user:" "work:" "bash-debug" "nocolor" "noconfirm" "nodepend" "gitversion" "msgdebug" "noloopmod" "tarball" "noiso" "noaur" "nochkver" "channellist" "config:" "noefi" "nodebug" "nosigcheck" "normwork" "log" "logpath:" "nolog" "nopkgbuild" "pacman-debug" "confirm" "tar-type:" "tar-opts:" "add-module:" "nogitversion" "cowspace:" "rerun" "depend" "loopmod")
+ARGUMENT=("${DEFAULT_ARGUMENT[@]}" "${@}") OPTS=("a:" "b" "c:" "d" "e" "g:" "h" "j" "k:" "l:" "o:" "p:" "r" "t:" "u:" "w:" "x") OPTL=("arch:" "boot-splash" "comp-type:" "debug" "cleaning" "cleanup" "gpgkey:" "help" "lang:" "japanese" "kernel:" "out:" "password:" "comp-opts:" "user:" "work:" "bash-debug" "nocolor" "noconfirm" "nodepend" "gitversion" "msgdebug" "noloopmod" "tarball" "noiso" "noaur" "nochkver" "channellist" "config:" "noefi" "nodebug" "nosigcheck" "normwork" "log" "logpath:" "nolog" "nopkgbuild" "pacman-debug" "confirm" "tar-type:" "tar-opts:" "add-module:" "nogitversion" "cowspace:" "rerun" "depend" "loopmod")
 GETOPT=(-o "$(printf "%s," "${OPTS[@]}")" -l "$(printf "%s," "${OPTL[@]}")" -- "${ARGUMENT[@]}")
-getopt -Q "${GETOPT[@]}" || exit 1
-readarray -t OPT < <(getopt "${GETOPT[@]}")
+getopt -Q "${GETOPT[@]}" || exit 1 # 引数エラー判定
+readarray -t OPT < <(getopt "${GETOPT[@]}") # 配列に代入
 
 eval set -- "${OPT[@]}"
 msg_debug "Argument: ${OPT[*]}"
@@ -1023,8 +1033,8 @@ while true; do
             esac
             shift 2
             ;;
-        -j | --uzbek)
-            msg_error "This option is obsolete in XinuxISO 3. To use Uzbek, use \"-l uz\"." "1"
+        -j | --japanese)
+            msg_error "This option is obsolete in AlterISO 3. To use Japanese, use \"-l ja\"." "1"
             ;;
         -k | --kernel)
             customized_kernel=true kernel="${2}"
@@ -1131,7 +1141,7 @@ msg_debug "Use the default configuration file (${defaultconfig})."
 
 # Check for a valid channel name
 if [[ -n "${1+SET}" ]]; then
-    case "$(bash "${tools_dir}/channel.sh" --version "${xinuxiso_version}" -n check "${1}"; printf "%d" "${?}")" in
+    case "$(bash "${tools_dir}/channel.sh" --version "${alteriso_version}" -n check "${1}"; printf "%d" "${?}")" in
         "2")
             msg_error "Invalid channel ${1}" "1"
             ;;
@@ -1170,10 +1180,10 @@ fi
 
 # Check channel version
 msg_debug "channel path is ${channel_dir}"
-if [[ ! "$(bash "${tools_dir}/channel.sh" --version "${xinuxiso_version}" ver "${channel_name}" | cut -d "." -f 1)" = "$(echo "${xinuxiso_version}" | cut -d "." -f 1)" ]] && [[ "${nochkver}" = false ]]; then
-    msg_error "This channel does not support Xinux ISO 3."
+if [[ ! "$(bash "${tools_dir}/channel.sh" --version "${alteriso_version}" ver "${channel_name}" | cut -d "." -f 1)" = "$(echo "${alteriso_version}" | cut -d "." -f 1)" ]] && [[ "${nochkver}" = false ]]; then
+    msg_error "This channel does not support Alter ISO 3."
     if [[ -d "${script_path}/.git" ]]; then
-        msg_error "Please run \"git checkout xinuxiso-2\"" "1"
+        msg_error "Please run \"git checkout alteriso-2\"" "1"
     else
         msg_error "Please download old version here.\nhttps://github.com/uzinfocom-org/xinux/releases" "1"
     fi
@@ -1199,7 +1209,7 @@ if [[ "${noiso}" = false ]]; then
         run_once make_efi
         run_once make_efiboot
     fi
-    run_once make_xinuxiso_info
+    run_once make_alteriso_info
     run_once make_prepare
     run_once make_overisofs
     run_once make_iso

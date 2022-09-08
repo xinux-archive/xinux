@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 
 # Copy config file for getty@.service to kmsconvt@.service
 if [[ -f "/etc/systemd/system/getty@.service.d/autologin.conf" ]]; then

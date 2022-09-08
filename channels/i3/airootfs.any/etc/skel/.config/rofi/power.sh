@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# ---------------------------------------------
+#  XInux i3wm edition
+#  show power menu script for rofi
+# ---------------------------------------------
+
+declare -A menu_list=(
+  ["Cancel"]=""
+  ["Shutdown"]="systemctl poweroff"
+  ["Reboot"]="systemctl reboot"
+  ["Suspend"]="systemctl suspend"
+  ["Lock Screen"]="light-locker-command -l"
+  ["Logout"]="i3-msg exit"
+)
+
+
+function main() {
+  local -r IFS=$'\n'
+  [[ "${#}" -ne 0 ]] && eval "${menu_list[$1]}" || echo "${!menu_list[*]}"
+}
+
+main "${@}"

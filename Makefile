@@ -31,16 +31,16 @@ full-i686:
 full-pen4:
 	sudo ${CURRENT_DIR}/tools/fullbuild.sh ${FULLBUILD} -m pen4   ${FULL_Pen4}
 
-basic-uz-64    basic-en-64    basic-uz-32     basic-en-32     basic-uz-pen4     basic-en-pen4    \
-cinnamon-uz-64 cinnamon-en-64 cinnamon-uz-32  cinnamon-en-32  cinnamon-uz-pen4  cinnamon-en-pen4 \
-gnome-uz-64    gnome-en-64    gnome-uz-32     gnome-en-32     gnome-uz-pen4     gnome-en-pen4    \
-i3-uz-64       i3-en-64       i3-uz-32        i3-en-32        i3-uz-pen4        i3-en-pen4       \
-lxde-uz-64     lxde-en-64     lxde-uz-32      lxde-en-32      lxde-uz-pen4      lxde-en-pen4     \
-plasma-uz-64   plasma-en-64                                                                      \
-releng-uz-64   releng-en-64   releng-uz-32    releng-en-32    releng-uz-pen4    releng-en-pen4   \
-serene-uz-64   serene-en-64   serene-uz-32    serene-en-32    serene-uz-pen4    serene-en-pen4   \
-xfce-uz-64     xfce-en-64     xfce-uz-32      xfce-en-32      xfce-uz-pen4      xfce-en-pen4     \
-xfce-pro-uz-64 xfce-pro-en-64                                                                    \
+basic-ja-64    basic-en-64    basic-ja-32     basic-en-32     basic-ja-pen4     basic-en-pen4    \
+cinnamon-ja-64 cinnamon-en-64 cinnamon-ja-32  cinnamon-en-32  cinnamon-ja-pen4  cinnamon-en-pen4 \
+gnome-ja-64    gnome-en-64    gnome-ja-32     gnome-en-32     gnome-ja-pen4     gnome-en-pen4    \
+i3-ja-64       i3-en-64       i3-ja-32        i3-en-32        i3-ja-pen4        i3-en-pen4       \
+lxde-ja-64     lxde-en-64     lxde-ja-32      lxde-en-32      lxde-ja-pen4      lxde-en-pen4     \
+plasma-ja-64   plasma-en-64                                                                      \
+releng-ja-64   releng-en-64   releng-ja-32    releng-en-32    releng-ja-pen4    releng-en-pen4   \
+serene-ja-64   serene-en-64   serene-ja-32    serene-en-32    serene-ja-pen4    serene-en-pen4   \
+xfce-ja-64     xfce-en-64     xfce-ja-32      xfce-en-32      xfce-ja-pen4      xfce-en-pen4     \
+xfce-pro-ja-64 xfce-pro-en-64                                                                    \
 :
 	@$(eval ARCHITECTURE=${shell echo ${@} | rev | cut -d '-' -f 1 | rev })
 	@$(eval LOCALE=${shell echo ${@} | rev | cut -d '-' -f 2 | rev })
@@ -67,7 +67,7 @@ menuconfig-script/channel_choice:
 
 build_option:
 	@if [ ! -f .config ]; then make menuconfig ; fi
-	${CURRENT_DIR}/tools/menuconf-to-xinuxconf.sh ${CURRENT_DIR}/.build_option
+	${CURRENT_DIR}/tools/menuconf-to-alterconf.sh ${CURRENT_DIR}/.build_option
 
 clean:
 	@sudo ${CURRENT_DIR}/${BUILD_SCRIPT} --noconfirm --debug clean
@@ -77,7 +77,7 @@ build:build_option
 	@sudo ${CURRENT_DIR}/${BUILD_SCRIPT} ${BUILD_OPTION}
 
 keyring::
-	@sudo ${CURRENT_DIR}/tools/keyring.sh --xinux-add --arch-add
+	@sudo ${CURRENT_DIR}/tools/keyring.sh --alter-add --arch-add
 
 wizard:
 	@sudo ${CURRENT_DIR}/tools/wizard.sh
@@ -87,8 +87,9 @@ check:
 	@bash -c 'shopt -s globstar nullglob; shellcheck -s bash --exclude=SC2068 -S error tools/*.{sh,ksh,bash}'
 
 
+# デバッグ用
 ARCH         := x86_64
 CHANNEL      := xfce
-LOCALE       := uz
+LOCALE       := ja
 custom:
 	sudo ${CURRENT_DIR}/${BUILD_SCRIPT} ${ARGS} ${SHARE_OPTION} --arch ${ARCH} -l ${LOCALE} ${CHANNEL}

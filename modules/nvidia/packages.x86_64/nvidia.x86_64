@@ -1,3 +1,6 @@
+#
+# Xinux package list
+#
 # Nvidia
 
 lib32-nvidia-utils

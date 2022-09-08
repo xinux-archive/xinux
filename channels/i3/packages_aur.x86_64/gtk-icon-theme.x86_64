@@ -1,0 +1,10 @@
+#
+# Xinux package list
+#
+# look and feel
+
+# theme
+adapta-gtk-theme-colorpack
+
+# icon
+inverse-icon-theme-blue-git

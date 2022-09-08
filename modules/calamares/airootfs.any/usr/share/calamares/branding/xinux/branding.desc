@@ -67,17 +67,17 @@ windowPlacement: center
 # are visible as buttons there if the corresponding *show* keys
 # are set to "true" (they can also be overridden).
 strings:
-    productName:         Xinux Linux
-    shortProductName:    Xinux Linux
+    productName:         Xinux
+    shortProductName:    Xinux
     version:
     shortVersion:
-    versionedName:       Xinux Linux
-    shortVersionedName:  Xinux Linux
+    versionedName:       Xinux
+    shortVersionedName:  Xinux
     bootloaderEntryName: Xinux
     productUrl:          https://oss.uzinfocom.uz/
-    supportUrl:          https://github.com/uzinfocom-org/xinux/issues
-    knownIssuesUrl:      https://oss.uzinfocom.uz/
-    releaseNotesUrl:     https://github.com/uzinfocom-org/xinux/releases
+    supportUrl:          https://github.com/orgs/uzinfocom-org/discussions
+    knownIssuesUrl:      https://github.com/uzinfocom-org/xinux/issues
+    releaseNotesUrl:     https://github.com/uzinfocom-org/xinux
 
 # These images are loaded from the branding module directory.
 #

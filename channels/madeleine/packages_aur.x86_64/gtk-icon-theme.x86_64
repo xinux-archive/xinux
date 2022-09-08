@@ -1,0 +1,9 @@
+#
+# Xinux package list
+#
+# look and feel
+
+# theme
+adapta-gtk-theme-colorpack
+
+numix-cursor-theme

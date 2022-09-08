@@ -1,3 +1,9 @@
+#
+# Xinux package list
+#
 
 #-- system monitor --#
 gnome-system-monitor
+
+#-- GUI Text Editor --#
+xed

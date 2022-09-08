@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 
 set -e -u
 
@@ -9,9 +9,9 @@ set -e -u
 password=xinux
 boot_splash=false
 kernel_config_line=("zen" "vmlinuz-linux-zen" "linux-zen")
-theme_name=xinux-logo
+theme_name=alter-logo
 username='xinux'
-os_name="Xinux Linux"
+os_name="Xinux"
 install_dir="xinux"
 usershell="/bin/bash"
 debug=false
@@ -91,11 +91,11 @@ if [[ -f "/etc/systemd/system/getty@.service.d/autologin.conf" ]]; then
 fi
 
 
-# Set to execute sudo without password as xinux user.
+# Set to execute sudo without password as alter user.
 cat >> /etc/sudoers << "EOF"
 Defaults pwfeedback
 EOF
-echo "${username} ALL=NOPASSWD: ALL" >> /etc/sudoers.d/xinuxlive
+echo "${username} ALL=NOPASSWD: ALL" >> /etc/sudoers.d/alterlive
 
 
 # Chnage sudoers permission
@@ -146,7 +146,7 @@ grub_os_name="${os_name%' Linux'}"
 sed -i -r  "s/(GRUB_DISTRIBUTOR=).*/\1\"${grub_os_name}\"/g" "/etc/default/grub"
 
 # Create new icon cache
-# This is because xinux icon was added by airootfs.
+# This is because alter icon was added by airootfs.
 run_additional_command "gtk-update-icon-cache -f /usr/share/icons/hicolor"
 
 
@@ -158,7 +158,7 @@ _safe_systemctl set-default graphical.target
 _safe_systemctl enable pacman-init.service
 _safe_systemctl enable cups.service
 _safe_systemctl enable NetworkManager.service
-_safe_systemctl enable xinuxiso-reflector.service
+_safe_systemctl enable alteriso-reflector.service
 _safe_systemctl disable reflector.service
 
 

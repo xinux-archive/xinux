@@ -1,0 +1,7 @@
+#
+# Xinux package list
+#
+# text editor
+
+nano
+vim-minimal

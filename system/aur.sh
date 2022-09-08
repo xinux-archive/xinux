@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 #shellcheck disable=SC2001
 
 set -e -u
@@ -101,7 +101,7 @@ prepare_env(){
 
 
     # Set pacman args
-    pacman_args=("--config" "/etc/xinuxiso-pacman.conf" "--noconfirm")
+    pacman_args=("--config" "/etc/alteriso-pacman.conf" "--noconfirm")
     if [[ "${pacman_debug}" = true ]]; then
         pacman_args+=("--debug")
     fi
@@ -115,6 +115,7 @@ install_aur_helper(){
         # Install depends
         for _pkg in "${aur_helper_depends[@]}"; do
             if ! pacman -Qq "${_pkg}" > /dev/null 2>&1 | grep -q "${_pkg}"; then
+                # --asdepsをつけているのでaur.shで削除される --neededをつけているので明示的にインストールされている場合削除されない
                 pacman -S --asdeps --needed "${pacman_args[@]}" "${_pkg}"
                 #remove_list+=("${_pkg}")
             fi
@@ -180,7 +181,7 @@ cleanup(){
     userdel "${aur_username}"
     remove /aurbuild_temp
     remove /etc/sudoers.d/aurbuild
-    remove "/etc/xinuxiso-pacman.conf"
+    remove "/etc/alteriso-pacman.conf"
     remove "/var/cache/pacman/pkg/"
 }
 
