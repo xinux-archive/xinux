@@ -50,12 +50,10 @@ function user_check () {
     getent passwd "${1}" > /dev/null
 }
 
-# 一般ユーザーで実行します
 function run_user () {
     sudo -u "${build_username}" "${@}"
 }
 
-# 引数を確認
 if [[ -z "${1}" ]]; then
     echo "Please specify the directory that contains PKGBUILD." >&2
     exit 1

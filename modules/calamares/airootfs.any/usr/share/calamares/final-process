@@ -60,7 +60,6 @@ if type dconf > /dev/null 2>&1 ; then
     dconf update
 fi
 
-# 追加のスクリプトを実行
 if [[ -d "${script_path}/${script_name}.d/" ]]; then
     for extra_script in "${script_path}/${script_name}.d/"*; do
         bash -c "${extra_script} ${user}"

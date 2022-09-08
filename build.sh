@@ -61,17 +61,13 @@ msg_error() {
 
 
 # Usage: getclm <number>
-# 標準入力から値を受けとり、引数で指定された列を抽出します。
 getclm() { cut -d " " -f "${1}"; }
 
 # Usage: echo_blank <number>
-# 指定されたぶんの半角空白文字を出力します
 echo_blank(){ yes " " 2> /dev/null  | head -n "${1}" | tr -d "\n"; }
 
-# cpコマンドのラッパー
 _cp(){ cp -af --no-preserve=ownership,mode -- "${@}"; }
 
-# gitコマンドのラッパー
 # https://stackoverflow.com/questions/71901632/fatal-unsafe-repository-home-repon-is-owned-by-someone-else
 # https://qiita.com/megane42/items/5375b54ea3570506e296
 git(){

@@ -115,7 +115,6 @@ install_aur_helper(){
         # Install depends
         for _pkg in "${aur_helper_depends[@]}"; do
             if ! pacman -Qq "${_pkg}" > /dev/null 2>&1 | grep -q "${_pkg}"; then
-                # --asdepsをつけているのでaur.shで削除される --neededをつけているので明示的にインストールされている場合削除されない
                 pacman -S --asdeps --needed "${pacman_args[@]}" "${_pkg}"
                 #remove_list+=("${_pkg}")
             fi

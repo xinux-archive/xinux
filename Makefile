@@ -87,7 +87,6 @@ check:
 	@bash -c 'shopt -s globstar nullglob; shellcheck -s bash --exclude=SC2068 -S error tools/*.{sh,ksh,bash}'
 
 
-# デバッグ用
 ARCH         := x86_64
 CHANNEL      := xfce
 LOCALE       := ja

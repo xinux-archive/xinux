@@ -3,7 +3,6 @@
 # Config files for all i686 channel
 #
 
-# この設定ファイルだけで使える変数
 UNSETVAR=false
 if [[ -z "${AURHELPER-""}" ]]; then
     AURHELPER="paru"
