@@ -10,11 +10,9 @@ lxappearance
 lxappearance-obconf
 lxde-common
 lxde-icon-theme
-# lxdm     LightDMで代用
 lxhotkey
 lxinput
 lxlauncher
-# lxmusic  VLCがインストールされているため（Issues #51）
 lxpanel
 lxrandr
 lxsession
